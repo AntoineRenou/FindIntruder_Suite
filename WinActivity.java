@@ -33,16 +33,22 @@ public class WinActivity extends Activity {
 
 
     public void displayHomeActivity(View view){
-        finish();
+
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
     }
 
-
     public void displayScoreActivity(View view){
-        finish();
+        Intent i = new Intent(this, ScoreActivity.class);
+        startActivity(i);
     }
 
 
     public void displayPlayActivity(View view){
         finish();
+    }
+    @Override
+    public void onBackPressed() {
+        //DO NOTHING
     }
 }

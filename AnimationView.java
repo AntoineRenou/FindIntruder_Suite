@@ -40,10 +40,10 @@ public class AnimationView extends View {
 
     Matrix matrix;
 
-    public AnimationView(Context context, Bitmap[] bm, int vitesse, int color,int intru) {
+    public AnimationView(Context context, Bitmap[] bm, int vitesse, int color, int intru) {
         super(context);
         screenSizeX = getResources().getDisplayMetrics().widthPixels;
-        screenSizeY = getResources().getDisplayMetrics().heightPixels;
+        screenSizeY = getResources().getDisplayMetrics().heightPixels-150;
 
         this.bm = bm;
         this.color = color;
@@ -66,8 +66,9 @@ public class AnimationView extends View {
             p[j] = new Paint();
             ColorFilter filter;
             if(j==intru){
-                filter = new LightingColorFilter(Color.BLACK, 1);
+                filter = new LightingColorFilter(color & 0xffa0a0a0, 1);
             } else {
+
                 filter = new LightingColorFilter(color, 1);
             }
             p[j].setColorFilter(filter);

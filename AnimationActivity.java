@@ -19,6 +19,7 @@ import java.util.Random;
 public class AnimationActivity extends Activity implements View.OnTouchListener{
 
     public int entities;
+    public byte[] icon;
     public int color;
     public int speed;
     private ShapeDrawable mDrawable;
@@ -34,6 +35,17 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setParameters();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        setParameters();
+
+    }
+
+    public void setParameters(){
         setContentView(R.layout.activity_animation);
         setExtrasSettings();
         startTime = System.currentTimeMillis();
@@ -48,7 +60,7 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
 
         bm = new Bitmap[entities];
         for(int j=0; j<bm.length;j++){
-            bm[j] = BitmapFactory.decodeResource(getResources(), R.drawable.glassicon);
+            bm[j] = BitmapFactory.decodeByteArray(icon, 0, icon.length);
         }
 
 
@@ -57,8 +69,6 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
         Container.addView(animV);
         animV.setOnTouchListener(this);
         setContentView(Container);
-
-
     }
 
     @Override
@@ -68,6 +78,8 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
                 animV.pos[intru][1]-100<event.getY() && event.getY()<animV.pos[intru][1]+100) {
             stopTime = System.currentTimeMillis();
             long score = stopTime-startTime;
+            startTime = 0;
+            stopTime = 0;
             setWinActivity(score);
         } else {
             failureEvent();
@@ -88,6 +100,7 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
     protected void setExtrasSettings(){
         Intent i = getIntent();
         entities = i.getExtras().getInt("entities");
+        icon = i.getExtras().getByteArray("icon");
         color = i.getExtras().getInt("color");
         speed = i.getExtras().getInt("speed");
     }
@@ -96,7 +109,10 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
     public void displayHomeActivity(View view){
         finish();
     }
-
+    @Override
+    public void onBackPressed() {
+        //DO NOTHING
+    }
 
 
 }

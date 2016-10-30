@@ -16,4 +16,8 @@ public class RulesActivity extends AppCompatActivity {
     public void displayHomeActivity(View view){
         finish();
     }
+    @Override
+    public void onBackPressed() {
+        //DO NOTHING
+    }
 }
