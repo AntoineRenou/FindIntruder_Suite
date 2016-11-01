@@ -38,10 +38,6 @@ public class WinActivity extends Activity {
             startActivity(i);
     }
 
-    public void displayScoreActivity(View view){
-        Intent i = new Intent(this, ScoreActivity.class);
-        startActivity(i);
-    }
 
 
     public void displayPlayActivity(View view){

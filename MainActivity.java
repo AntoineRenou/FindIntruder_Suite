@@ -66,10 +66,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void displayScoreActivity(View view){
-        Intent i = new Intent(this, ScoreActivity.class);
-        startActivity(i);
-    }
     @Override
     public void onBackPressed() {
         //DO NOTHING
