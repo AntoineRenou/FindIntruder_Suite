@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //final MediaPlayer mpExplo = new MediaPlayer();
         final MediaPlayer mpl = new MediaPlayer();
         mpl.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mpl.create(this, R.raw.spaceinvaders1);
