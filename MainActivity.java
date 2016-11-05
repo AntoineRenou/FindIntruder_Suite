@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setContentView(R.layout.activity_main);
-
+//
         Resources res = getResources();
         Drawable drawable = res.getDrawable(R.drawable.spaceinvader1);
         Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
