@@ -72,17 +72,19 @@ public class SettingsActivity extends AppCompatActivity {
         t3.getBackground().setColorFilter(filter);
         t4.getBackground().setColorFilter(filter);
 
+
+
     }
 
     public void getIconResource(View view){
         TextView t = (TextView) findViewById(view.getId());
         Drawable cd = t.getBackground();
+
         Bitmap bitmap = ((BitmapDrawable) cd).getBitmap();
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         icon = baos.toByteArray();
-
-
 
     }
 
