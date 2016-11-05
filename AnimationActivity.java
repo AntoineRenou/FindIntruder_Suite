@@ -1,6 +1,7 @@
 package com.antoinerenou.findintruder;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,13 +9,19 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.ShapeDrawable;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Random;
 
 public class AnimationActivity extends Activity implements View.OnTouchListener{
@@ -79,9 +86,10 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
 
         if(animV.pos[intru][0]-100<event.getX() && event.getX()<animV.pos[intru][0]+100 &&
                 animV.pos[intru][1]-100<event.getY() && event.getY()<animV.pos[intru][1]+100) {
-            final MediaPlayer mpExplo = new MediaPlayer();
-
-            mpExplo.create(this, R.raw.spaceinvaders1);
+            //final MediaPlayer mpExplo = new MediaPlayer();
+            final MediaPlayer mpExplo = getMediaPlayer(this);
+            mpExplo.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mpExplo.create(this, R.raw.explosion);
 
             mpExplo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -91,6 +99,7 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
                     }
                 }
             });
+
             stopTime = System.currentTimeMillis();
             long score = stopTime-startTime;
             startTime = 0;
@@ -111,6 +120,20 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
     protected void failureEvent(){
         //mpShoot.start();
         System.out.println("_____________________FAIL__________________");
+
+        //final MediaPlayer mpShoot = new MediaPlayer();
+        final MediaPlayer mpShoot = getMediaPlayer(this);
+        mpShoot.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mpShoot.create(this, R.raw.explosion);
+
+        mpShoot.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                if (mp == mpShoot) {
+                    mpShoot.start();
+                }
+            }
+        });
     }
 
     protected void setExtrasSettings(){
@@ -129,6 +152,46 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
     public void onBackPressed() {
         //DO NOTHING
     }
+
+    static MediaPlayer getMediaPlayer(Context context){
+
+    MediaPlayer mediaplayer = new MediaPlayer();
+
+    if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
+        return mediaplayer;
+    }
+
+    try {
+        Class<?> cMediaTimeProvider = Class.forName( "android.media.MediaTimeProvider" );
+        Class<?> cSubtitleController = Class.forName( "android.media.SubtitleController" );
+        Class<?> iSubtitleControllerAnchor = Class.forName( "android.media.SubtitleController$Anchor" );
+        Class<?> iSubtitleControllerListener = Class.forName( "android.media.SubtitleController$Listener" );
+
+        Constructor constructor = cSubtitleController.getConstructor(new Class[]{Context.class, cMediaTimeProvider, iSubtitleControllerListener});
+
+        Object subtitleInstance = constructor.newInstance(context, null, null);
+
+        Field f = cSubtitleController.getDeclaredField("mHandler");
+
+        f.setAccessible(true);
+        try {
+            f.set(subtitleInstance, new Handler());
+        }
+        catch (IllegalAccessException e) {return mediaplayer;}
+        finally {
+            f.setAccessible(false);
+        }
+
+        Method setsubtitleanchor = mediaplayer.getClass().getMethod("setSubtitleAnchor", cSubtitleController, iSubtitleControllerAnchor);
+
+        setsubtitleanchor.invoke(mediaplayer, subtitleInstance, null);
+        //Log.e("", "subtitle is setted :p");
+    } catch (Exception e) {}
+
+    return mediaplayer;
+}
+
+
 
 
 }

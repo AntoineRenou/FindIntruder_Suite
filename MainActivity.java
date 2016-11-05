@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +24,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //final MediaPlayer mpExplo = new MediaPlayer();
+        final MediaPlayer mpl = new MediaPlayer();
+        mpl.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mpl.create(this, R.raw.spaceinvaders1);
+
+        mpl.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                if (mp == mpl) {
+                    mpl.start();
+                }
+            }
+        });
+
         setContentView(R.layout.activity_main);
 
         Resources res = getResources();
