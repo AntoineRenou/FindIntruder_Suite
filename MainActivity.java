@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     public int color = -1;
     public int speed = 1;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

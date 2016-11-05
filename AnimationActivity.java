@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.ShapeDrawable;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -29,6 +30,8 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
     Bitmap[] bm;
     int intru;
     long startTime,stopTime;
+   // public MediaPlayer mpExplo = MediaPlayer.create(this, R.raw.explosion);
+//    public MediaPlayer mpShoot = MediaPlayer.create(this, R.raw.shoot);
 
 
 
@@ -76,6 +79,18 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
 
         if(animV.pos[intru][0]-100<event.getX() && event.getX()<animV.pos[intru][0]+100 &&
                 animV.pos[intru][1]-100<event.getY() && event.getY()<animV.pos[intru][1]+100) {
+            final MediaPlayer mpExplo = new MediaPlayer();
+
+            mpExplo.create(this, R.raw.spaceinvaders1);
+
+            mpExplo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    if (mp == mpExplo) {
+                        mpExplo.start();
+                    }
+                }
+            });
             stopTime = System.currentTimeMillis();
             long score = stopTime-startTime;
             startTime = 0;
@@ -94,6 +109,7 @@ public class AnimationActivity extends Activity implements View.OnTouchListener{
     }
 
     protected void failureEvent(){
+        //mpShoot.start();
         System.out.println("_____________________FAIL__________________");
     }
 
