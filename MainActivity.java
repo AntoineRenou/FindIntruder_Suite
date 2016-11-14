@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+		/*
         final MediaPlayer mpl = new MediaPlayer();
         mpl.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mpl.create(this, R.raw.spaceinvaders1);
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                     mpl.start();
                 }
             }
-        });
+        });*/
 
         setContentView(R.layout.activity_main);
 
